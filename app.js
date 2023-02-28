@@ -1,5 +1,4 @@
 import fastify from "fastify";
-import fetch from 'node-fetch';
 
 export default function build(opts={}) {
     const app = fastify(opts)
