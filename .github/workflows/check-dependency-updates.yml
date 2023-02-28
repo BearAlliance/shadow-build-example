@@ -1,0 +1,28 @@
+name: Check Dependency Updates
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  check-dep-updates:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+        cache: 'npm'
+
+    # Modify package.json with the latest dependencies
+    - run: npx npm-check-updates -u
+
+    # Install the newly upgraded dependencies
+    - run: npm install
+
+    # Verify that the tests still pass with these new dependencies
+    # Ideally, the tests should cover all major functionality
+    - run: npm test

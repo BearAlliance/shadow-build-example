@@ -1,0 +1,26 @@
+name: Build With Latest Node
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  check-dep-updates:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        # Use the latest version available, instead of a defined version
+        node-version: latest
+        cache: 'npm'
+
+    # npm install rather than npm ci might be a good idea in case the new node version comes with package lock changes
+    - run: npm ci
+
+    # Verify that the tests still pass in this new context
+    # Ideally, the tests should cover all major functionality
+    - run: npm test
